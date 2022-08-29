@@ -20,26 +20,27 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Center(
         child: FutureBuilder(
-            future: albumResponse(),
-            builder: ((context, snapshot) {
-              if (!snapshot.hasData) {
-                return CircularProgressIndicator();
-              } else if (snapshot.hasError) {
-                throw SocketException(snapshot.error.toString());
-              } else {
-                FactResponse factResponse = snapshot.data as FactResponse;
+          future: albumResponse(),
+          builder: ((context, snapshot) {
+            if (snapshot.hasError) {
+              throw SocketException(snapshot.error.toString());
+            } else if (snapshot.connectionState == ConnectionState.done) {
+              FactResponse factResponse = snapshot.data as FactResponse;
 
-                return ListView.builder(
-                  itemCount: factResponse.facts.length,
-                  itemBuilder: ((context, index) {
-                    return Text(
-                      '$index.${factResponse.facts[index].description}\n',
-                      style: TextStyle(fontSize: 50),
-                    );
-                  }),
-                );
-              }
-            })),
+              return ListView.builder(
+                itemCount: factResponse.facts.length,
+                itemBuilder: ((context, index) {
+                  return Text(
+                    '$index.${factResponse.facts[index].description}\n',
+                    style: TextStyle(fontSize: 50),
+                  );
+                }),
+              );
+            } else {
+              return CircularProgressIndicator();
+            }
+          }),
+        ),
       ),
     );
   }

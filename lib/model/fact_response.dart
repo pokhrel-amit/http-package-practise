@@ -1,9 +1,7 @@
-
-
 class FactResponse {
   int id;
   String category;
-  List<Facts> facts;
+  List facts = <Facts>[];
 
   FactResponse({
     required this.id,
@@ -11,10 +9,9 @@ class FactResponse {
     required this.facts,
   });
 
-  FactResponse.fromJson(Map<String,dynamic> json):  id = json['id'],
-    category = json['category'],
-     facts = <Facts>[]
-     {
+  FactResponse.fromJson(Map<String, dynamic> json)
+      : id = json['id'],
+        category = json['category'] {
     for (var item in json['facts']) {
       facts.add(Facts.fromJson(item));
     }
@@ -39,7 +36,7 @@ class Facts {
         title = json['title'],
         description = json['description'],
         imageUrl = json['image_url'] {}
-  
+
   // @override
   // String toString() => '''
   // id: $id,
